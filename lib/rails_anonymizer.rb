@@ -1,32 +1,60 @@
 require "rails_anonymizer/version"
 require "rails_anonymizer/railtie"
+require "activerecord-import"
 
 module RailsAnonymizer
   mattr_accessor :black_list
 
-  def self.anonymize!(force: false)
-    unless force || Rails.env.development? || Rails.env.test?
-      raise "Warning: use force option to run this command on an environment that is not development or test"
-    end
+  class << self
+    def anonymize!(force: false)
+      unless force || Rails.env.development? || Rails.env.test?
+        raise "Warning: use force option to run this command on an environment that is not development or test"
+      end
 
-    models = ApplicationRecord.send(:subclasses)
+      Rails.application.eager_load!
 
-    models.each do |model|
-      next if model.abstract_class?
+      models = ApplicationRecord.send(:subclasses)
 
-      model.column_names.each do |column_name|
-        if black_list[column_name]
-          model.update(model.pluck(:id), Array.new(model.count) { { column_name => black_list[column_name].call } })
+      models.each do |model|
+        next if model.abstract_class?
+
+        column_names = model.column_names.select { |column_name| black_list[column_name].present? }
+        next if column_names.empty?
+
+        model.in_batches do |batch|
+          batch.each do |record|
+            column_names.each do |column_name|
+              record[column_name] = black_list[column_name].call
+            end
+          end
+          model.import(batch.to_ary, on_duplicate_key_update: { columns: column_names }, validate: false)
         end
       end
     end
-  end
 
-  def self.dump
-  end
+    def dump
+      cmd = nil
+      with_config do |app, host, db, user|
+        cmd = "pg_dump --host #{host} --username #{user} --verbose " \
+              "--clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
+      end
+      puts cmd
+      exec cmd
+    end
 
-  def self.setup
-    self.black_list = {}
-    yield(RailsAnonymizer)
+    def setup
+      self.black_list = {}
+      yield(RailsAnonymizer)
+    end
+
+    private
+
+    # https://gist.github.com/hopsoft/56ba6f55fe48ad7f8b90
+    def with_config
+      yield Rails.application.class.parent_name.underscore,
+        ActiveRecord::Base.connection_config[:host],
+        ActiveRecord::Base.connection_config[:database],
+        ActiveRecord::Base.connection_config[:username]
+    end
   end
 end

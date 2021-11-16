@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rails_anonymizer (0.1.0)
+      activerecord-import
       rails (~> 6.1.4, >= 6.1.4.1)
 
 GEM
@@ -53,6 +54,8 @@ GEM
     activerecord (6.1.4.1)
       activemodel (= 6.1.4.1)
       activesupport (= 6.1.4.1)
+    activerecord-import (1.2.0)
+      activerecord (>= 3.2)
     activestorage (6.1.4.1)
       actionpack (= 6.1.4.1)
       activejob (= 6.1.4.1)
