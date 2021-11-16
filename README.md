@@ -7,6 +7,23 @@ Anonymize your DB.
 * Run `bin/rails db:anonymize`
 * Dump your anonymized DB with `bin/rails db:anonymize:dump` (currently works only for postgresql, PR to support other DBs welcome)
 
+### Example of initializer
+
+```ruby
+# config/initializers/rails_anonymizer.rb
+ANONYMOUS_PASSWORD = User.new(password: "password").encrypted_password
+
+RailsAnonymizer.setup do |config|
+  config.black_list = {
+    "email" => -> { Faker::Internet.safe_email },
+    "encrypted_password" => -> { ANONYMOUS_PASSWORD },
+    "name" => ->(record) { "customer_#{record.id}" },
+    "address" => -> { Faker::Address.full_address },
+    "phone_number" => -> { "+33333333333" },
+  }
+end
+```
+
 ## Installation
 Add this line to your application's Gemfile:
 

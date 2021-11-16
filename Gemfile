@@ -10,6 +10,7 @@ group :development do
 end
 
 gem "faker"
+gem "devise"
 
 # To use a debugger
 gem "byebug", group: %i[development test]
