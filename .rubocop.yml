@@ -1,12 +1,8 @@
 AllCops:
   Exclude:
-    - db/schema.rb
-    - db/*_schema.rb
-    - node_modules/**/*
+    - spec/dummy/db/schema.rb
+    - spec/dummy/node_modules/**/*
     - bin/*
-    - db/migrate/*_add_rpush.rb
-    - vendor/**/db/migrate/*_add_rpush.rb
-    - db/migrate/*.active_analytics.rb
   NewCops: enable
   SuggestExtensions: false
 
@@ -18,9 +14,7 @@ Layout/EmptyLinesAroundBlockBody:
 
 Layout/LineLength:
   Exclude:
-    - db/migrate/*
-    - db/blog_migrate/*
-    - vendor/**/db/migrate/*
+    - spec/dummy/db/migrate/*
   Max: 140
   IgnoredPatterns: ['\A\s*#']
 
@@ -34,14 +28,18 @@ Lint/EmptyBlock:
   Exclude:
     - spec/**/*
 
+Lint/SuppressedException:
+  Exclude:
+    - spec/dummy/config/initializers/rails_anonymizer.rb
+
 Metrics/AbcSize:
   Exclude:
-    - db/migrate/*
-  Max: 30
+    - spec/dummy/db/migrate/*
+  Max: 40
 
 Metrics/BlockLength:
   Exclude:
-    - config/environments/*
+    - spec/dummy/config/environments/*
     - spec/**/*
   Max: 50
 
@@ -50,18 +48,18 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Exclude:
-    - db/migrate/*
-  Max: 10
+    - spec/dummy/db/migrate/*
+  Max: 20
 
 Metrics/MethodLength:
   Exclude:
-    - db/migrate/*
+    - spec/dummy/db/migrate/*
   Max: 30
 
 Metrics/PerceivedComplexity:
   Exclude:
-    - db/migrate/*
-  Max: 10
+    - spec/dummy/db/migrate/*
+  Max: 20
 
 Naming/InclusiveLanguage:
   Enabled: false
@@ -76,7 +74,7 @@ Style/ClassAndModuleChildren:
   EnforcedStyle: compact
   Exclude:
     - spec/dummy/config/application.rb
-    - db/migrate/*
+    - spec/dummy/db/migrate/*
 
 Style/Documentation:
   Enabled: false

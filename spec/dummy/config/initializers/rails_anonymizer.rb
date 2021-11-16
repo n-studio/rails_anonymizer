@@ -1,6 +1,6 @@
 begin
   ANONYMOUS_PASSWORD = User.new(password: "password").encrypted_password
-rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid => e
+rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid => _e
 end
 
 RailsAnonymizer.setup do |config|
