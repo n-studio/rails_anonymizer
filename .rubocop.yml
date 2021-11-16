@@ -1,0 +1,112 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/*_schema.rb
+    - node_modules/**/*
+    - bin/*
+    - db/migrate/*_add_rpush.rb
+    - vendor/**/db/migrate/*_add_rpush.rb
+    - db/migrate/*.active_analytics.rb
+  NewCops: enable
+  SuggestExtensions: false
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/LineLength:
+  Exclude:
+    - db/migrate/*
+    - db/blog_migrate/*
+    - vendor/**/db/migrate/*
+  Max: 140
+  IgnoredPatterns: ['\A\s*#']
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Lint/EmptyBlock:
+  Exclude:
+    - spec/**/*
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/*
+  Max: 30
+
+Metrics/BlockLength:
+  Exclude:
+    - config/environments/*
+    - spec/**/*
+  Max: 50
+
+Metrics/ClassLength:
+  Max: 300
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - db/migrate/*
+  Max: 10
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
+  Max: 30
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - db/migrate/*
+  Max: 10
+
+Naming/InclusiveLanguage:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - config/application.rb
+    - db/migrate/*
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MultilineIfModifier:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/TernaryParentheses:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
