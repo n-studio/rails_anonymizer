@@ -1,4 +1,13 @@
-# desc "Explaining what the task does"
-# task :rails_anonymizer do
-#   # Task goes here
-# end
+namespace :db do
+  desc "Anonymize database"
+  task :anonymize do
+    RailsAnonymizer.anonymize!(force: ENV["FORCE"] == "true")
+  end
+
+  namespace :anonymize do
+    desc "Dump database"
+    task :dump do
+      RailsAnonymizer.dump
+    end
+  end
+end

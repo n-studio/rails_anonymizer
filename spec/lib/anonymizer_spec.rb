@@ -10,7 +10,7 @@ RSpec.describe "RailsAnonymizerAnonymizer" do
       user.reload
       expect(user.email).not_to eq("private_email")
       expect(user.name).not_to eq("private_name")
-      expect(user.phone_number).not_to eq("private_number")
+      expect(user.phone_number).to eq("+33333333333")
     end
   end
 end

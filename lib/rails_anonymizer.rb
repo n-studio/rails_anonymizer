@@ -22,6 +22,9 @@ module RailsAnonymizer
     end
   end
 
+  def self.dump
+  end
+
   def self.setup
     self.black_list = {}
     yield(RailsAnonymizer)

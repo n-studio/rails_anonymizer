@@ -1,3 +1,0 @@
-example_id                           | status | run_time     |
------------------------------------- | ------ | ------------ |
-./spec/lib/anonymizer_spec.rb[1:1:1] | passed | 1.49 seconds |
