@@ -75,7 +75,7 @@ Style/BlockDelimiters:
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
   Exclude:
-    - config/application.rb
+    - spec/dummy/config/application.rb
     - db/migrate/*
 
 Style/Documentation:

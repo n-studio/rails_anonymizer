@@ -1,15 +1,15 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Specify your gem's dependencies in rails_anonymizer.gemspec.
 gemspec
 
 group :development do
-  gem 'sqlite3'
-  gem 'rubocop'
+  gem "rubocop"
+  gem "sqlite3"
 end
 
-gem 'faker'
+gem "faker"
 
 # To use a debugger
-gem 'byebug', group: [:development, :test]
+gem "byebug", group: %i[development test]

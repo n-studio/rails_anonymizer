@@ -13,9 +13,10 @@ module RailsAnonymizer
 
     models.each do |model|
       next if model.abstract_class?
+
       model.column_names.each do |column_name|
-        if self.black_list[column_name]
-          model.update(model.pluck(:id), Array.new(model.count) { { column_name => self.black_list[column_name].call } })
+        if black_list[column_name]
+          model.update(model.pluck(:id), Array.new(model.count) { { column_name => black_list[column_name].call } })
         end
       end
     end

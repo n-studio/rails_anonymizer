@@ -1,4 +1,2 @@
-module RailsAnonymizer
-  class Railtie < ::Rails::Railtie
-  end
+class RailsAnonymizer::Railtie < ::Rails::Railtie
 end
