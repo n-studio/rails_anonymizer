@@ -24,7 +24,13 @@ module RailsAnonymizer
         model.in_batches do |batch|
           batch.each do |record|
             column_names.each do |column_name|
-              record[column_name] = black_list[column_name].call
+              anonymized_value_lambda = black_list[column_name]
+              record[column_name] =
+                if anonymized_value_lambda.parameters.one?
+                  anonymized_value_lambda.call(record)
+                else
+                  anonymized_value_lambda.call
+                end
             end
           end
           model.import(batch.to_ary, on_duplicate_key_update: { columns: column_names }, validate: false)
