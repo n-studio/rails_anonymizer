@@ -10,3 +10,4 @@
 /spec/dummy/tmp/
 /spec/examples.txt
 .byebug_history
+*.dump

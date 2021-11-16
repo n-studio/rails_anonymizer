@@ -39,28 +39,23 @@ module RailsAnonymizer
     end
 
     def dump
-      cmd = nil
-      with_config do |app, host, db, user|
-        cmd = "pg_dump --host #{host} --username #{user} --verbose " \
-              "--clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
-      end
-      puts cmd
+      app = Rails.application.class.module_parent_name.underscore
+      db = ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      cmd = "pg_dump --verbose " \
+            "--clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
+      exec cmd
+    end
+
+    def restore(file_path)
+      db = ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      cmd = "pg_restore --verbose " \
+            "--clean --no-owner --no-acl --format=c --dbname=#{db} #{file_path}"
       exec cmd
     end
 
     def setup
       self.black_list = {}
       yield(RailsAnonymizer)
-    end
-
-    private
-
-    # https://gist.github.com/hopsoft/56ba6f55fe48ad7f8b90
-    def with_config
-      yield Rails.application.class.parent_name.underscore,
-        ActiveRecord::Base.connection_config[:host],
-        ActiveRecord::Base.connection_config[:database],
-        ActiveRecord::Base.connection_config[:username]
     end
   end
 end

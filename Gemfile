@@ -6,7 +6,7 @@ gemspec
 
 group :development do
   gem "rubocop"
-  gem "sqlite3"
+  gem "pg"
 end
 
 gem "faker"

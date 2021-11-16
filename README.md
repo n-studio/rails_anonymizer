@@ -3,7 +3,7 @@ Anonymize your DB.
 
 ## Usage
 * Setup your blacklist in the initializer
-* Dump your prod DB on a local environment with `bin/rails db < prod.sql`
+* Restore your prod DB on a local environment with `bin/rails db:anonymize:restore FILE=prod.dump`
 * Run `bin/rails db:anonymize`
 * Dump your anonymized DB with `bin/rails db:anonymize:dump` (currently works only for postgresql, PR to support other DBs welcome)
 
@@ -11,7 +11,10 @@ Anonymize your DB.
 
 ```ruby
 # config/initializers/rails_anonymizer.rb
-ANONYMOUS_PASSWORD = User.new(password: "password").encrypted_password
+begin
+  ANONYMOUS_PASSWORD = User.new(password: "password").encrypted_password
+rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid => e
+end
 
 RailsAnonymizer.setup do |config|
   config.black_list = {
