@@ -44,6 +44,7 @@ module RailsAnonymizer
       cmd = "pg_dump --verbose " \
             "--clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
       exec cmd
+      puts "The database has been dumped to: #{Rails.root}/db/#{app}.dump"
     end
 
     def restore(file_path)
