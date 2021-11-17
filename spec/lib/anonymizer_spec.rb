@@ -19,7 +19,7 @@ RSpec.describe "RailsAnonymizerAnonymizer" do
       expect(user.email).not_to eq("private_email@example.org")
       expect(user.valid_password?("password")).to eq(true)
       expect(user.name).to eq("user_#{user.id}")
-      expect(user.address).not_to eq("private_address")
+      expect(user.address).to eq("private_address")
       expect(user.phone_number).to eq("+33333333333")
     end
   end

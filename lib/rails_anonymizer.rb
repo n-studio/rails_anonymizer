@@ -18,13 +18,16 @@ module RailsAnonymizer
       models.each do |model|
         next if model.abstract_class?
 
-        column_names = model.column_names.select { |column_name| black_list[column_name].present? }
+        model_black_list = black_list.dup
+        model_black_list.merge!(black_list[model.to_s]) if black_list[model.to_s].is_a? Hash
+
+        column_names = model.column_names.select { |column_name| model_black_list[column_name].present? }
         next if column_names.empty?
 
         model.in_batches do |batch|
           batch.each do |record|
             column_names.each do |column_name|
-              anonymized_value_lambda = black_list[column_name]
+              anonymized_value_lambda = model_black_list[column_name]
               record[column_name] =
                 if anonymized_value_lambda.parameters.one?
                   anonymized_value_lambda.call(record)

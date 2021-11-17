@@ -22,7 +22,9 @@ RailsAnonymizer.setup do |config|
     "encrypted_password" => -> { ANONYMOUS_PASSWORD },
     "name" => ->(record) { "customer_#{record.id}" },
     "address" => -> { Faker::Address.full_address },
-    "phone_number" => -> { "+33333333333" },
+    "User" => {
+      "phone_number" => -> { "+33333333333" },
+    },
   }
 end
 ```
