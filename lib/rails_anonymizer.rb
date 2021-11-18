@@ -21,22 +21,16 @@ module RailsAnonymizer
         model_black_list = black_list.dup
         model_black_list.merge!(black_list[model.to_s]) if black_list[model.to_s].is_a? Hash
 
-        column_names = model.column_names.select { |column_name| model_black_list[column_name].present? }
-        next if column_names.empty?
+        columns_to_anonymize = model.column_names.select { |column_name| model_black_list[column_name].present? }
+        next if columns_to_anonymize.empty?
 
         model.in_batches do |batch|
           batch.each do |record|
-            column_names.each do |column_name|
-              anonymized_value_lambda = model_black_list[column_name]
-              record[column_name] =
-                if anonymized_value_lambda.parameters.one?
-                  anonymized_value_lambda.call(record)
-                else
-                  anonymized_value_lambda.call
-                end
+            columns_to_anonymize.each do |column_name|
+              record[column_name] = anonymize_record_with(record, anonymizer: model_black_list[column_name])
             end
           end
-          model.import(batch.to_ary, on_duplicate_key_update: { columns: column_names }, validate: false)
+          model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
         end
       end
     end
@@ -60,6 +54,16 @@ module RailsAnonymizer
     def setup
       self.black_list = {}
       yield(RailsAnonymizer)
+    end
+
+    private
+
+    def anonymize_record_with(record, anonymizer:)
+      if anonymizer.parameters.one?
+        anonymizer.call(record)
+      else
+        anonymizer.call
+      end
     end
   end
 end
