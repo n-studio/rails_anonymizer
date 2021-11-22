@@ -5,7 +5,7 @@ end
 
 RailsAnonymizer.setup do |config|
   config.black_list = {
-    "email" => -> { Faker::Internet.email },
+    "email" => -> { Faker::Internet.unique.email },
     "encrypted_password" => -> { ANONYMOUS_PASSWORD },
     "name" => ->(record) { "user_#{record.id}" },
     "Admin" => {
