@@ -6,12 +6,16 @@ module RailsAnonymizer
   mattr_accessor :black_list
 
   class << self
-    def anonymize!(force: false)
+    def anonymize!(force: false, verbose: false)
       unless force || Rails.env.development? || Rails.env.test?
         raise "Warning: use force option to run this command on an environment that is not development or test"
       end
 
       Rails.application.eager_load!
+
+      records_count = 0
+      start_at = Time.current
+      puts "Starting anonymization..." if verbose
 
       models = ApplicationRecord.send(:subclasses)
 
@@ -31,7 +35,13 @@ module RailsAnonymizer
             end
           end
           model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
+          records_count += batch.size if verbose
         end
+        print "." if verbose
+      end
+      if verbose
+        duration = (Time.current - start_at).round(2)
+        puts "\nFinished anonymization. #{records_count} records anonymized in #{duration} seconds"
       end
     end
 

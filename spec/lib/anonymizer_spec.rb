@@ -13,7 +13,7 @@ RSpec.describe "RailsAnonymizerAnonymizer" do
     end
 
     it "anonymizes the email" do
-      RailsAnonymizer.anonymize!
+      RailsAnonymizer.anonymize!(verbose: false)
 
       user.reload
       expect(user.email).not_to eq("private_email@example.org")

@@ -1,7 +1,7 @@
 namespace :db do
   desc "Anonymize database"
   task anonymize: :environment do
-    RailsAnonymizer.anonymize!(force: ENV["FORCE"] == "true")
+    RailsAnonymizer.anonymize!(force: ENV["FORCE"] == "true", verbose: ENV["VERBOSE"] == "true")
   end
 
   namespace :anonymize do
