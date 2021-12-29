@@ -17,6 +17,14 @@ rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid => e
 end
 
 RailsAnonymizer.setup do |config|
+  config.before do
+    # run some code before anonymizing
+  end
+
+  config.after do
+    # run some code after anonymizing
+  end
+
   config.black_list = {
     "email" => -> { Faker::Internet.unique.safe_email },
     "encrypted_password" => -> { ANONYMOUS_PASSWORD },
