@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2021_11_16_022207) do
     t.string "name"
     t.string "address"
     t.string "phone_number"
+    t.string "before_field"
+    t.string "after_field"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

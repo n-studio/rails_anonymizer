@@ -3,7 +3,7 @@ require "rails_anonymizer/railtie"
 require "activerecord-import"
 
 module RailsAnonymizer
-  mattr_accessor :black_list
+  mattr_accessor :black_list, :before_block, :after_block
 
   class << self
     def anonymize!(force: false, verbose: false)
@@ -16,6 +16,8 @@ module RailsAnonymizer
       records_count = 0
       start_at = Time.current
       puts "Starting anonymization..." if verbose
+
+      self.before_block&.call
 
       models = ApplicationRecord.send(:subclasses)
 
@@ -39,6 +41,9 @@ module RailsAnonymizer
         end
         print "." if verbose
       end
+
+      self.after_block&.call
+
       if verbose
         duration = (Time.current - start_at).round(2)
         puts "\nFinished anonymization. #{records_count} records anonymized in #{duration} seconds"
@@ -64,6 +69,14 @@ module RailsAnonymizer
     def setup
       self.black_list = {}
       yield(RailsAnonymizer)
+    end
+
+    def before(&block)
+      self.before_block = block
+    end
+
+    def after(&block)
+      self.after_block = block
     end
 
     private

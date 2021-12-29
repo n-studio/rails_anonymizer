@@ -7,6 +7,14 @@ Rails.application.config.to_prepare do
   end
 
   RailsAnonymizer.setup do |config|
+    config.before do
+      User.update_all(before_field: "lorem")
+    end
+
+    config.after do
+      User.update_all(after_field: "ipsum")
+    end
+
     config.black_list = {
       "email" => -> { Faker::Internet.unique.email },
       "encrypted_password" => -> { RailsAnonymizerConfig::ANONYMOUS_PASSWORD },
