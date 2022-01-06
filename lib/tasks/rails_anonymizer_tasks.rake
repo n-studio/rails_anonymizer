@@ -1,5 +1,5 @@
 namespace :db do
-  desc "Anonymize database"
+  desc "Anonymize database (options: FORCE=false, VERBOSE=false)"
   task anonymize: :environment do
     RailsAnonymizer.anonymize!(force: ENV["FORCE"] == "true", verbose: ENV["VERBOSE"] == "true")
   end
@@ -10,7 +10,7 @@ namespace :db do
       RailsAnonymizer.dump
     end
 
-    desc "Restore database"
+    desc "Restore database dump located by FILE=(/path/to/dump)"
     task restore: :environment do
       raise "no FILE provided" if ENV["FILE"].blank?
 
