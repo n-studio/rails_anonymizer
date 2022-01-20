@@ -15,7 +15,7 @@ module RailsAnonymizer
 
       records_count = 0
       start_at = Time.current
-      puts "Starting anonymization..." if verbose
+      puts "Starting anonymization of models..." if verbose
 
       self.before_block&.call
 
@@ -23,6 +23,8 @@ module RailsAnonymizer
 
       models.each do |model|
         next if model.abstract_class?
+
+        puts "  * #{model.name}" if verbose
 
         model_black_list = black_list.dup
         model_black_list.merge!(black_list[model.to_s]) if black_list[model.to_s].is_a? Hash
@@ -39,7 +41,6 @@ module RailsAnonymizer
           model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
           records_count += batch.size if verbose
         end
-        print "." if verbose
       end
 
       self.after_block&.call
