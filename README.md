@@ -37,6 +37,9 @@ RailsAnonymizer.setup do |config|
 end
 ```
 
+### Skip model
+If you want to skip a model, add the class method `skip_anonymizer?` to the model and make it return `true`.
+
 ## Installation
 Add this line to your application's Gemfile:
 

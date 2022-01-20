@@ -22,7 +22,7 @@ module RailsAnonymizer
       models = ApplicationRecord.send(:subclasses)
 
       models.each do |model|
-        next if model.abstract_class?
+        next if model.abstract_class? || model.try(:skip_anonymizer?)
 
         puts "  * #{model.name}" if verbose
 
