@@ -42,7 +42,7 @@ module RailsAnonymizer
             model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
             records_count += batch.size if verbose
           end
-        rescue PG::UndefinedTable => e
+        rescue ActiveRecord::StatementInvalid => e
           puts "    SKIPPING #{model.name} - #{e.message}" if verbose
         end
       end
