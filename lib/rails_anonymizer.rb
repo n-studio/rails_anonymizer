@@ -24,22 +24,26 @@ module RailsAnonymizer
       models.each do |model|
         next if model.abstract_class? || model.try(:skip_anonymizer?)
 
-        puts "  * #{model.name}" if verbose
+        begin
+          puts "  * #{model.name}" if verbose
 
-        model_black_list = black_list.dup
-        model_black_list.merge!(black_list[model.to_s]) if black_list[model.to_s].is_a? Hash
+          model_black_list = black_list.dup
+          model_black_list.merge!(black_list[model.to_s]) if black_list[model.to_s].is_a? Hash
 
-        columns_to_anonymize = model.column_names.select { |column_name| model_black_list[column_name].present? }
-        next if columns_to_anonymize.empty?
+          columns_to_anonymize = model.column_names.select { |column_name| model_black_list[column_name].present? }
+          next if columns_to_anonymize.empty?
 
-        model.in_batches do |batch|
-          batch.each do |record|
-            columns_to_anonymize.each do |column_name|
-              record[column_name] = anonymize_record_with(record, anonymizer: model_black_list[column_name])
+          model.in_batches do |batch|
+            batch.each do |record|
+              columns_to_anonymize.each do |column_name|
+                record[column_name] = anonymize_record_with(record, anonymizer: model_black_list[column_name])
+              end
             end
+            model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
+            records_count += batch.size if verbose
           end
-          model.import(batch.to_ary, on_duplicate_key_update: { columns: columns_to_anonymize }, validate: false)
-          records_count += batch.size if verbose
+        rescue PG::UndefinedTable => e
+          puts "    SKIPPING #{model.name} - #{e.message}" if verbose
         end
       end
 
