@@ -14,7 +14,7 @@ namespace :db do
     task restore: :environment do
       raise "no FILE provided" if ENV["FILE"].blank?
 
-      RailsAnonymizer.restore(ENV["FILE"])
+      RailsAnonymizer.restore(ENV.fetch("FILE", nil))
     end
   end
 end

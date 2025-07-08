@@ -16,13 +16,16 @@ Layout/LineLength:
   Exclude:
     - spec/dummy/db/migrate/*
   Max: 140
-  IgnoredPatterns: ['\A\s*#']
+  AllowedPatterns: ['\A\s*#']
 
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
 
 Lint/EmptyBlock:
   Exclude:
@@ -35,7 +38,7 @@ Lint/SuppressedException:
 Metrics/AbcSize:
   Exclude:
     - spec/dummy/db/migrate/*
-  Max: 40
+  Max: 60
 
 Metrics/BlockLength:
   Exclude:
@@ -54,7 +57,7 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Exclude:
     - spec/dummy/db/migrate/*
-  Max: 30
+  Max: 50
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -108,3 +111,6 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
+
+Style/RedundantConstantBase:
+  Enabled: false

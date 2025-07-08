@@ -17,7 +17,7 @@ module RailsAnonymizer
       start_at = Time.current
       puts "Starting anonymization of models..." if verbose
 
-      self.before_block&.call
+      before_block&.call
 
       models = ApplicationRecord.send(:subclasses)
 
@@ -47,12 +47,12 @@ module RailsAnonymizer
         end
       end
 
-      self.after_block&.call
+      after_block&.call
 
-      if verbose
-        duration = (Time.current - start_at).round(2)
-        puts "\nFinished anonymization. #{records_count} records anonymized in #{duration} seconds"
-      end
+      return unless verbose
+
+      duration = (Time.current - start_at).round(2)
+      puts "\nFinished anonymization. #{records_count} records anonymized in #{duration} seconds"
     end
 
     def dump
