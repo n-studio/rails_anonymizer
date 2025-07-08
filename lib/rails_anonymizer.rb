@@ -59,7 +59,7 @@ module RailsAnonymizer
       app = Rails.application.class.module_parent_name.underscore
       db = ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       cmd = "pg_dump --verbose " \
-            "--clean --format=c #{db} > #{Rails.root}/db/#{app}.dump"
+            "--clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.dump"
       exec cmd
       puts "The database has been dumped to: #{Rails.root}/db/#{app}.dump"
     end
@@ -67,7 +67,7 @@ module RailsAnonymizer
     def restore(file_path)
       db = ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       cmd = "pg_restore --verbose " \
-            "--clean --format=c --dbname=#{db} #{file_path}"
+            "--clean --no-owner --no-acl --format=c --dbname=#{db} #{file_path}"
       exec cmd
     end
 
